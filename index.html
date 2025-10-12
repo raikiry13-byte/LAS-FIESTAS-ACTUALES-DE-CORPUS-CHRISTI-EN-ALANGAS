@@ -51,14 +51,6 @@
     comunitaria y transmisión de saberes. También refleja debates actuales sobre patrimonio y participación juvenil.</p>
     <p class="fuente">Fuente base: Tesis “Permanencias de las expresiones rituales prehispánicas de Cochasquí en las fiestas actuales de Corpus Christi en Alangasí”.</p>
   </div>
-  <h3>Metodología freireana en el aula</h3>
-  <ol class="freire">
-    <li><b>Dialogicidad:</b> preguntas generadoras (“¿Qué símbolos ves? ¿Qué significan para tu familia?”).</li>
-    <li><b>Codificación:</b> fotos y videos como “codificaciones” del territorio y la historia.</li>
-    <li><b>Problematización:</b> respeto animal, rol de la iglesia, economía de la fiesta, equidad de género.</li>
-    <li><b>Acción cultural:</b> afiches, microrelatos y danzas escolares que dialoguen con la comunidad.</li>
-    <li><b>Evaluación crítica:</b> portafolio con reflexiones y acuerdos de convivencia intercultural.</li>
-  </ol>
 </section>
 
 <section id="galeria" class="card">
@@ -74,19 +66,44 @@
 <section id="juegos" class="card">
   <h2>Juegos y actividades</h2>
   <div class="grid2">
-    <div><h3>Trivia</h3><div id="trivia"></div></div>
-    <div><h3>Línea del tiempo</h3><div id="timeline" class="timeline"></div><p class="hint">Toca cada hito para ver su explicación.</p></div>
-    <div><h3>Memorama de símbolos</h3><div id="memory" class="memory"></div></div>
-    <div><h3>Viste al danzante (arrastrar y soltar)</h3>
+    <div>
+      <h3>Trivia</h3><div id="trivia"></div>
+    </div>
+    <div>
+      <h3>Línea del tiempo</h3>
+      <div class="tl-wrap">
+        <input type="range" id="tlRange" min="1200" max="2025" value="1500">
+        <div id="timeline" class="timeline-rail"><div class="timeline-inner" id="timelineInner"></div></div>
+      </div>
+      <p class="hint">Desplaza la barra o arrástrala. Toca los hitos para leer su nota.</p>
+      <div id="tlNote" class="tl-note"></div>
+    </div>
+    <div>
+      <h3>Memorama de símbolos</h3>
+      <div id="memory" class="memory"></div>
+      <div class="legend card-lite">
+        <h4>Explicación de símbolos</h4>
+        <ul id="memExplain"></ul>
+      </div>
+    </div>
+    <div>
+      <h3>Viste al danzante</h3>
       <div class="dressup">
-        <div id="avatar" class="avatar">Danzante</div>
+        <div class="avatar">
+          <img src="assets/img/danzante-silueta.svg" alt="Danzante (CC0)" class="avatar-img">
+          <div class="drop-slot" data-slot="cabeza">Zona: cabeza</div>
+          <div class="drop-slot" data-slot="pechera">Zona: pechera</div>
+          <div class="drop-slot" data-slot="faldon">Zona: faldón</div>
+          <div class="drop-slot" data-slot="brazaletes">Zona: brazaletes</div>
+        </div>
         <div class="items">
-          <div class="item" draggable="true" data-slot="cabeza">Sombrero</div>
-          <div class="item" draggable="true" data-slot="pechera">Pechera</div>
+          <div class="item" draggable="true" data-slot="cabeza">Sombrero/Corona</div>
+          <div class="item" draggable="true" data-slot="pechera">Pechera bordada</div>
           <div class="item" draggable="true" data-slot="faldon">Faldón</div>
           <div class="item" draggable="true" data-slot="brazaletes">Brazaletes</div>
         </div>
       </div>
+      <p class="hint">La silueta del danzante es de dominio público (CC0) creada para este sitio.</p>
     </div>
   </div>
 </section>
@@ -96,7 +113,7 @@
   <ul>
     <li>Guía de aula (PDF) — planificación por edades.</li>
     <li>Rúbrica de evaluación freireana (PDF).</li>
-    <li>Plantillas de máscaras CC0 — <a id="printTemplates" class="btn">Imprimir PDF de plantillas</a></li>
+    <li>Plantillas de máscaras CC0 — <a id="printTemplates" class="btn-like">Imprimir plantillas</a></li>
   </ul>
 </section>
 
@@ -110,8 +127,8 @@
     </div>
     <input required placeholder="Título del relato" id="rTitle">
     <textarea required placeholder="Escribe tu relato (máx. 1500 caracteres)" id="rBody" maxlength="1500"></textarea>
-    <button type="submit" class="btn">Publicar en este navegador</button>
-    <button type="button" id="exportRelatos">Exportar .json</button>
+    <button type="submit" class="btn-like">Publicar en este navegador</button>
+    <button type="button" id="exportRelatos" class="btn-like">Exportar .json</button>
     <input type="file" id="importFile" accept="application/json">
   </form>
   <div id="relatosList" class="grid"></div>
@@ -125,6 +142,7 @@
   </ol>
   <p>© CC-BY para textos didácticos. Imágenes y videos subidos por el autor del proyecto.</p>
 </footer>
+
 <script src="script.js"></script>
 </main>
 </body>
