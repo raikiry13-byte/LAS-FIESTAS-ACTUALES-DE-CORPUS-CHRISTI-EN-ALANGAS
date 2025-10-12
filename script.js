@@ -9,7 +9,7 @@ document.querySelectorAll('.tab-button').forEach(btn=>{
   });
 });
 
-// Galería con filtros (fallback si media.json no carga)
+// Galería (carga con manifest o fallback)
 const gallery = document.getElementById('gallery');
 const filterBar = document.getElementById('filterBar');
 const editToggle = document.getElementById('editToggle');
@@ -17,12 +17,9 @@ const OV_KEY='media_overrides_v1';
 
 const embeddedMedia = (()=>{
   const list = [];
-  for(let i=1;i<=60;i++){
-    list.push({src:`assets/img/alangasi-${i}.jpg`, type:'image', category:'Procesión', caption:'Corpus Christi en Alangasí'});
-  }
-  for(let i=1;i<=10;i++){
-    list.push({src:`assets/video/video-${i}.mp4`, type:'video', category:'Procesión', caption:'Comparsas y música'});
-  }
+  for(let i=1;i<=60;i++){ list.push({src:`assets/img/alangasi-${i}.jpg`, type:'image', category:'Procesión', caption:'Corpus Christi en Alangasí'}); }
+  for(let i=1;i<=10;i++){ list.push({src:`assets/video/video-${i}.mp4`, type:'video', category:'Procesión', caption:'Comparsas y música'}); }
+  list.push({src:'assets/img/danzante-silueta.svg', type:'image', category:'Danzas', caption:'Silueta CC0 del danzante'});
   return list;
 })();
 
@@ -114,14 +111,14 @@ const triviaQs = [
 ];
 function renderTrivia(){
   if(!triviaHost) return;
-  triviaHost.innerHTML='';
+  triviaHost.innerHTML = '';
   triviaQs.forEach((t,i)=>{
     const box = document.createElement('div'); box.style.marginBottom='8px';
     const p = document.createElement('p'); p.innerHTML = `<b>${i+1}.</b> ${t.q}`;
     box.appendChild(p);
     t.a.forEach((opt,idx)=>{
       const btn = document.createElement('button'); btn.textContent = opt; btn.style.marginRight='6px'; btn.className='tab-button';
-      btn.addEventListener('click', ()=>{ if(idx===t.ok){ btn.style.background='#10b981'; btn.style.color='#fff'; } else { btn.style.background='#ef4444'; btn.style.color='#fff'; } });
+      btn.addEventListener('click', ()=>{ if(idx===t.ok){ btn.style.background='#000'; btn.style.color='#fff'; } else { btn.style.background='#fff'; btn.style.color='#000'; btn.style.borderColor='#000'; }});
       box.appendChild(btn);
     });
     triviaHost.appendChild(box);
@@ -129,24 +126,66 @@ function renderTrivia(){
 }
 renderTrivia();
 
-// Línea del tiempo
-const tl = document.getElementById('timeline');
-const facts = [
-  {year:'s. XIII', text:'La fiesta del Corpus Christi se institucionaliza en Europa.'},
-  {year:'s. XVI', text:'Llega a los Andes y se integra a rituales agrícolas de junio.'},
-  {year:'Hoy', text:'La comunidad celebra danzas, ofrendas y procesión en sincretismo.'}
+// Línea del tiempo (scrollable, por años)
+const tlRail = document.getElementById('timeline');
+const tlInner = document.getElementById('timelineInner');
+const tlRange = document.getElementById('tlRange');
+const tlNote = document.getElementById('tlNote');
+const tlEvents = [
+  {year:1200, note:'S. XIII: Se consolidan celebraciones eucarísticas en Europa.'},
+  {year:1500, note:'S. XVI: Llega a los Andes en tiempos coloniales.'},
+  {year:1600, note:'S. XVII: Se afianzan procesiones y comparsas locales.'},
+  {year:1900, note:'S. XX: La fiesta se adapta a nuevos contextos urbanos.'},
+  {year:2000, note:'S. XXI: Patrimonio vivo, participación juvenil y escuelas.'},
+  {year:2024, note:'Actualidad: celebración comunitaria con identidad andina.'}
 ];
-if(tl){
-  tl.innerHTML='';
-  facts.forEach(f=>{ const b = document.createElement('span'); b.className='badge'; b.title=f.text; b.textContent=f.year; tl.appendChild(b); });
+function renderTimeline(){
+  if(!tlInner) return;
+  tlInner.innerHTML='';
+  const min=1200, max=2025;
+  const width = 2000; // px
+  tlInner.style.minWidth = width+'px';
+  tlEvents.forEach(e=>{
+    const x = (e.year-min)/(max-min) * width;
+    const dot = document.createElement('div'); dot.className='tl-dot'; dot.style.left = x+'px'; dot.title=e.note;
+    const lab = document.createElement('div'); lab.className='tl-label'; lab.style.left = x+'px'; lab.textContent = e.year;
+    dot.addEventListener('click', ()=> tlNote.textContent = e.year+': '+e.note);
+    lab.addEventListener('click', ()=> tlNote.textContent = e.year+': '+e.note);
+    tlInner.appendChild(dot); tlInner.appendChild(lab);
+  });
+}
+renderTimeline();
+if(tlRange && tlRail){
+  tlRange.addEventListener('input', ()=>{
+    const min=1200, max=2025, width = tlInner.getBoundingClientRect().width;
+    const pos = (tlRange.value-min)/(max-min) * (width - tlRail.clientWidth);
+    tlRail.scrollTo({left: pos, behavior:'smooth'});
+  });
 }
 
-// Memorama
+// Memorama con explicaciones
 const mem = document.getElementById('memory');
+const memExplain = document.getElementById('memExplain');
 if(mem){
   const symbols = ['☀️','🌽','🕊️','🪶','🥁','🪗','🪙','🕯️'];
+  const explain = {
+    '☀️':'Sol (Inti): ciclo agrícola y energía vital.',
+    '🌽':'Maíz: alimento sagrado y ofrenda comunitaria.',
+    '🕊️':'Paloma: paz y dimensión espiritual de la fiesta.',
+    '🪶':'Plumas: vínculo con aves andinas y libertad.',
+    '🥁':'Tambor: ritmo para la procesión y las danzas.',
+    '🪗':'Acordeón: música popular en comparsas.',
+    '🪙':'Monedas: mayordomías y economía de la fiesta.',
+    '🕯️':'Vela: luz, promesas y memoria familiar.'
+  };
   let deck = symbols.concat(symbols).sort(()=>Math.random()-0.5);
   let first=null, lock=false, matched=0;
+  const added = new Set();
+  function addExplain(sym){
+    if(added.has(sym) || !memExplain) return;
+    const li = document.createElement('li'); li.textContent = explain[sym] || sym;
+    memExplain.appendChild(li); added.add(sym);
+  }
   deck.forEach((s)=>{
     const card = document.createElement('div'); card.className='mem-card'; card.dataset.symbol=s; card.textContent='?';
     card.addEventListener('click', ()=>{
@@ -154,25 +193,74 @@ if(mem){
       card.textContent = s;
       if(!first){ first = card; }
       else {
-        if(first.dataset.symbol===s){ first.classList.add('matched'); card.classList.add('matched'); matched+=2; first=null; if(matched===deck.length){ setTimeout(()=>alert('¡Memorama completo! Conversa qué significa cada símbolo.'),200); } }
-        else { lock=true; setTimeout(()=>{ first.textContent='?'; card.textContent='?'; first=null; lock=false; }, 600); }
+        if(first.dataset.symbol===s){
+          first.classList.add('matched'); card.classList.add('matched'); matched+=2; addExplain(s); first=null;
+          if(matched===deck.length){ setTimeout(()=>alert('¡Memorama completo! Conversa qué significa cada símbolo.'),200); }
+        } else {
+          lock=true; setTimeout(()=>{ first.textContent='?'; card.textContent='?'; first=null; lock=false; }, 600);
+        }
       }
     });
     mem.appendChild(card);
   });
 }
 
-// Viste al danzante
-const avatar = document.getElementById('avatar');
+// Viste al danzante (drag & drop sobre silueta CC0)
+const avatar = document.querySelector('.avatar');
 if(avatar){
-  ['cabeza','pechera','faldon','brazaletes'].forEach(slot=>{
-    const span = document.createElement('span'); span.className='drop-slot'; span.dataset.slot=slot;
-    span.textContent = `Zona: ${slot}`; avatar.appendChild(document.createElement('br')); avatar.appendChild(span);
-  });
   document.querySelectorAll('.item').forEach(it=> it.addEventListener('dragstart', e=> e.dataTransfer.setData('text/plain', it.dataset.slot)));
   avatar.addEventListener('dragover', e=> e.preventDefault());
-  avatar.addEventListener('drop', e=>{ e.preventDefault(); const slot = e.dataTransfer.getData('text/plain'); const target = Array.from(avatar.querySelectorAll('.drop-slot')).find(s=>s.dataset.slot===slot); if(target){ target.textContent = `✓ ${slot} colocado`; target.style.borderColor='#10b981'; } });
+  avatar.addEventListener('drop', e=>{
+    e.preventDefault();
+    const slot = e.dataTransfer.getData('text/plain');
+    const target = avatar.querySelector(`.drop-slot[data-slot="${slot}"]`);
+    if(target){ target.textContent = `✓ ${slot} colocado`; target.style.borderColor='#10b981'; }
+  });
 }
 
 // Plantillas (SVG imprimible)
 document.getElementById('printTemplates')?.addEventListener('click', ()=>{ window.open('assets/templates/plantillas-mascaras-CC0.svg','_blank'); });
+
+// Relatos (igual que antes)
+const RKEY='relatos_cc_alangasi';
+const relForm = document.getElementById('relatoForm');
+const relList = document.getElementById('relatosList');
+function loadRel(){ try{return JSON.parse(localStorage.getItem(RKEY)||'[]')}catch(e){return []} }
+function saveRel(d){ localStorage.setItem(RKEY, JSON.stringify(d)) }
+function renderRel(){
+  if(!relList) return;
+  const data = loadRel();
+  relList.innerHTML='';
+  data.forEach((r,idx)=>{
+    const card = document.createElement('div'); card.className='tile';
+    card.innerHTML = `<div style="padding:10px"><h4>${r.title}</h4>
+      <small>Por ${r.name||'Anónimo'} — ${r.age||''} — ${r.com||''}</small><p>${r.body}</p>
+      <button data-i="${idx}" class="btn-like">Eliminar</button></div>`;
+    card.querySelector('.btn-like').addEventListener('click', e=>{
+      const i = parseInt(e.target.dataset.i); const arr = loadRel(); arr.splice(i,1); saveRel(arr); renderRel();
+    });
+    relList.appendChild(card);
+  });
+}
+if(relForm){
+  relForm.addEventListener('submit', e=>{
+    e.preventDefault();
+    const data = loadRel();
+    data.unshift({name:document.getElementById('rName').value,
+                  age:document.getElementById('rAge').value,
+                  com:document.getElementById('rCom').value,
+                  title:document.getElementById('rTitle').value,
+                  body:document.getElementById('rBody').value});
+    saveRel(data); relForm.reset(); renderRel();
+  });
+  document.getElementById('exportRelatos').addEventListener('click', ()=>{
+    const blob = new Blob([JSON.stringify(loadRel(),null,2)], {type:'application/json'});
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'relatos.json'; a.click();
+  });
+  document.getElementById('importFile').addEventListener('change', e=>{
+    const f = e.target.files[0]; if(!f) return;
+    const r = new FileReader(); r.onload = ev=>{ saveRel(JSON.parse(ev.target.result)); renderRel(); };
+    r.readAsText(f);
+  });
+  renderRel();
+}
