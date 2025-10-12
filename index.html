@@ -1,1 +1,131 @@
-<!doctype html><meta charset='utf-8'><title>Corpus Christi — Mínimo</title><h1>Hola Pedrinchi</h1><p>Este es el esqueleto. Sustituye con la versión completa cuando subas a GitHub.</p>
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Corpus Christi Ecuador — Aula Viva</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="hero">
+  <h1>Corpus Christi en Ecuador</h1>
+  <p>Aprende, juega y comparte — Metodologías freireanas para niños y jóvenes</p>
+  <nav class="menu">
+    <a href="#educacion">Origen y significado</a>
+    <a href="#galeria">Galería</a>
+    <a href="#juegos">Juegos</a>
+    <a href="#recursos">Recursos docentes</a>
+    <a href="#relatos">Relatos y comentarios</a>
+    <a class="btn" id="printTemplates">Imprimir PDF de plantillas</a>
+  </nav>
+</header>
+
+<main>
+<section id="educacion" class="card">
+  <h2>Origen, significado y evolución</h2>
+  <div class="tabs">
+    <button class="tab-button active" data-tab="6-9">6–9 años</button>
+    <button class="tab-button" data-tab="10-13">10–13 años</button>
+    <button class="tab-button" data-tab="14-17">14–17 años</button>
+  </div>
+  <div class="tab-content active" id="tab-6-9">
+    <p><b>¿Qué es?</b> Es una fiesta en la que las personas agradecen a la vida y a Dios por los alimentos.
+    Hay música, bailes y una gran procesión. En Ecuador, los trajes y danzas muestran también ideas de los pueblos
+    andinos, como el sol, el maíz y el cóndor.</p>
+    <ul>
+      <li><b>Origen:</b> vino de Europa hace muchos años como una fiesta católica.</li>
+      <li><b>Significado:</b> dar gracias y celebrar juntos.</li>
+      <li><b>Evolución:</b> se juntó con fiestas andinas de junio y se volvió única.</li>
+    </ul>
+  </div>
+  <div class="tab-content" id="tab-10-13">
+    <p>El Corpus Christi se originó en la Europa medieval para honrar la <b>Eucaristía</b>. En los Andes,
+    al llegar en el siglo XVI, se integró a los calendarios agrícolas cercanos al solsticio de junio.
+    Por eso conviven símbolos católicos (custodia, procesión) con elementos andinos (maíz, flores, danzas con personajes).</p>
+    <p>Este encuentro se llama <b>sincretismo</b>. Las comunidades lo actualizan cada año con nuevas músicas,
+    materiales y formas de organización.</p>
+  </div>
+  <div class="tab-content" id="tab-14-17">
+    <p>En lugares como Alangasí se observan <b>permanencias rituales</b>: comparsas, ofrendas y jerarquías
+    que vinculan la memoria prehispánica con la liturgia católica. La fiesta funciona como espacio de identidad, economía
+    comunitaria y transmisión de saberes. También refleja debates actuales sobre patrimonio y participación juvenil.</p>
+    <p class="fuente">Fuente base: Tesis “Permanencias de las expresiones rituales prehispánicas de Cochasquí en las fiestas actuales de Corpus Christi en Alangasí”.</p>
+  </div>
+  <h3>Metodología freireana en el aula</h3>
+  <ol class="freire">
+    <li><b>Dialogicidad:</b> preguntas generadoras (“¿Qué símbolos ves? ¿Qué significan para tu familia?”).</li>
+    <li><b>Codificación:</b> fotos y videos como “codificaciones” del territorio y la historia.</li>
+    <li><b>Problematización:</b> respeto animal, rol de la iglesia, economía de la fiesta, equidad de género.</li>
+    <li><b>Acción cultural:</b> afiches, microrelatos y danzas escolares que dialoguen con la comunidad.</li>
+    <li><b>Evaluación crítica:</b> portafolio con reflexiones y acuerdos de convivencia intercultural.</li>
+  </ol>
+</section>
+
+<section id="galeria" class="card">
+  <h2>Galería</h2>
+  <details class="note"><summary>Edición para docentes</summary>
+    <p>Activa el modo edición para cambiar categorías y pies de foto; se guardan solo en este navegador.</p>
+    <label><input type="checkbox" id="editToggle"> Modo edición</label>
+  </details>
+  <div id="filterBar" class="filters"></div>
+  <div class="grid" id="gallery"></div>
+</section>
+
+<section id="juegos" class="card">
+  <h2>Juegos y actividades</h2>
+  <div class="grid2">
+    <div><h3>Trivia</h3><div id="trivia"></div></div>
+    <div><h3>Línea del tiempo</h3><div id="timeline" class="timeline"></div><p class="hint">Toca cada hito para ver su explicación.</p></div>
+    <div><h3>Memorama de símbolos</h3><div id="memory" class="memory"></div></div>
+    <div><h3>Viste al danzante (arrastrar y soltar)</h3>
+      <div class="dressup">
+        <div id="avatar" class="avatar">Danzante</div>
+        <div class="items">
+          <div class="item" draggable="true" data-slot="cabeza">Sombrero</div>
+          <div class="item" draggable="true" data-slot="pechera">Pechera</div>
+          <div class="item" draggable="true" data-slot="faldon">Faldón</div>
+          <div class="item" draggable="true" data-slot="brazaletes">Brazaletes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="recursos" class="card">
+  <h2>Recursos pedagógicos</h2>
+  <ul>
+    <li>Guía de aula (PDF) — planificación por edades.</li>
+    <li>Rúbrica de evaluación freireana (PDF).</li>
+    <li>Plantillas de máscaras CC0 — <a id="printTemplates" class="btn">Imprimir PDF de plantillas</a></li>
+  </ul>
+</section>
+
+<section id="relatos" class="card">
+  <h2>Relatos y comentarios de la comunidad</h2>
+  <form id="relatoForm">
+    <div class="row">
+      <input required placeholder="Nombre" id="rName">
+      <input placeholder="Edad" id="rAge">
+      <input placeholder="Comunidad/Barrio" id="rCom">
+    </div>
+    <input required placeholder="Título del relato" id="rTitle">
+    <textarea required placeholder="Escribe tu relato (máx. 1500 caracteres)" id="rBody" maxlength="1500"></textarea>
+    <button type="submit" class="btn">Publicar en este navegador</button>
+    <button type="button" id="exportRelatos">Exportar .json</button>
+    <input type="file" id="importFile" accept="application/json">
+  </form>
+  <div id="relatosList" class="grid"></div>
+</section>
+
+<footer class="card">
+  <h3>Publicar la página</h3>
+  <ol>
+    <li><b>GitHub Pages:</b> crea un repositorio, sube estos archivos y activa Pages en “Settings → Pages → Deploy from branch”.</li>
+    <li><b>Netlify:</b> arrastra la carpeta al panel de Netlify o conecta tu repo.</li>
+  </ol>
+  <p>© CC-BY para textos didácticos. Imágenes y videos subidos por el autor del proyecto.</p>
+</footer>
+<script src="script.js"></script>
+</main>
+</body>
+</html>
