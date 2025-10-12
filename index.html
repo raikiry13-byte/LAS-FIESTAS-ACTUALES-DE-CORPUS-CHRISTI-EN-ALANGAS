@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Corpus Christi en Ecuador – Aula Interactiva</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <h1>Corpus Christi en Ecuador</h1>
+    <p>Aula interactiva inspirada en Paulo Freire – arte, cultura y aprendizaje vivencial</p>
+    <nav class="nav">
+      <a href="#aprender">Aprender</a>
+      <a href="#galeria">Galería</a>
+      <a href="#jugar">Juegos</a>
+      <a href="#docentes">Docentes</a>
+      <a href="#imprimir">Plantillas</a>
+      <a href="#relatos">Relatos</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="aprender" class="section">
+      <h2>Origen, significado y evolución</h2>
+      <div class="tabs">
+        <button class="tab-button active" data-tab="6-9">Niños 6–9</button>
+        <button class="tab-button" data-tab="10-13">10–13</button>
+        <button class="tab-button" data-tab="14-17">14–17</button>
+      </div>
+      <div class="tab-content active" id="tab-6-9">
+        <p>El Corpus Christi es una gran fiesta donde el pueblo sale a bailar y agradecer. Se juntan tradiciones
+        indígenas de los Andes con la iglesia católica. Hay música, colores, flores y comida para compartir.
+        Las danzas y trajes muestran respeto por la naturaleza: el sol, la tierra y los animales.</p>
+      </div>
+      <div class="tab-content" id="tab-10-13">
+        <p>Esta celebración nació en Europa como una procesión católica que honra la Eucaristía.
+        En los Andes ecuatorianos se mezcló con fiestas agrícolas del solsticio de junio. Por eso vemos
+        ofrendas de flores y maíz, procesiones, y comparsas con personajes como rucos y sacha runas.
+        Es un ejemplo de <b>sincretismo</b>: dos tradiciones que se unen y siguen vivas.</p>
+      </div>
+      <div class="tab-content" id="tab-14-17">
+        <p>Las investigaciones sobre Cochasquí y Alangasí muestran permanencias rituales: danzas, ofrendas,
+        música y organización comunitaria que se re-significan dentro de la liturgia católica. La fiesta también es
+        un espacio de identidad y memoria social. (Resumen adaptado del documento base de tesis).</p>
+        <p class="fuente">Fuente: Tesis "Permanencias de las expresiones rituales prehispánicas de Cochasquí en las fiestas actuales de Corpus Christi en Alangasí".</p>
+      </div>
+
+      <h3>Metodología freireana en el aula</h3>
+      <ul class="freire">
+        <li><b>Diálogo horizontal:</b> las y los estudiantes son coautores; el docente facilita.</li>
+        <li><b>Temas generadores:</b> partir de la vida del barrio, la familia y la fiesta.</li>
+        <li><b>Problematización:</b> ¿Cómo dialogan naturaleza y fe? ¿Qué símbolos cuentan nuestra historia?</li>
+        <li><b>Praxis:</b> investigar + crear (danza, máscara, relato) + reflexionar y compartir.</li>
+        <li><b>Evaluación participativa:</b> rúbricas co-diseñadas con evidencias artísticas y reflexivas.</li>
+      </ul>
+    </section>
+
+    <section id="galeria" class="section">
+      <h2>Galería de imágenes y videos</h2>
+      <div id="filterBar" class="filters"></div>
+      <div class="grid" id="gallery"></div>
+      <details class="note"><summary>Edición para docentes</summary><p>Activa el modo edición para cambiar categorías y pies de foto; se guardan en este navegador.</p><label class="tab-button" style="display:inline-block"><input type="checkbox" id="editToggle"> Modo edición</label></details>
+      <p class="note">Haz clic para ver detalles. Puedes agregar más archivos en <code>assets/img</code> y <code>assets/video</code>.</p>
+    </section>
+
+    <section id="jugar" class="section">
+      <h2>Espacio interactivo</h2>
+      <div class="games">
+        <div class="card">
+          <h3>Trivia</h3>
+          <div id="trivia"></div>
+        </div>
+        <div class="card">
+          <h3>Línea del tiempo</h3>
+          <div id="timeline"></div>
+        </div>
+        <div class="card">
+          <h3>Memorama de símbolos</h3>
+          <div id="memory"></div>
+        </div>
+        <div class="card">
+          <h3>Arrastra y suelta: viste al danzante</h3>
+          <div id="dressup" class="dressup">
+            <div class="avatar" id="avatar">Danzante</div>
+            <div class="wardrobe">
+              <div class="item" draggable="true" data-slot="cabeza">Penacho</div>
+              <div class="item" draggable="true" data-slot="pechera">Pechera</div>
+              <div class="item" draggable="true" data-slot="faldon">Faldón</div>
+              <div class="item" draggable="true" data-slot="brazaletes">Brazaletes</div>
+            </div>
+          </div>
+          <p class="note">Arrastra las prendas sobre el danzante. ¡Explora combinaciones y conversa su significado!</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="docentes" class="section">
+      <h2>Recursos pedagógicos descargables</h2>
+      <ul class="downloads">
+        <li><a href="assets/templates/plantillas-mascaras-CC0.pdf" download>Imprimir PDF de plantillas (A4)</a></li>
+        <li><a href="recursos/guia-didactica-freire.pdf" download>Guía freireana para el aula (PDF)</a></li>
+        <li><a href="recursos/rubrica-creacion-artistica.pdf" download>Rúbrica de creación artística (PDF)</a></li>
+      </ul>
+      <p>Incluye secuencias didácticas, rúbricas y actividades para primaria y secundaria.</p>
+    </section>
+
+    <section id="imprimir" class="section">
+      <h2>Plantillas para máscaras</h2>
+      <p>Estas plantillas son de dominio público (CC0) creadas para esta web. Úsalas sin restricciones con fines educativos.</p>
+      <button id="printTemplates">Imprimir PDF de plantillas</button>
+    </section>
+
+    <section id="relatos" class="section">
+      <h2>Relatos y Comentarios de la comunidad</h2>
+      <p class="note">Comparte tu recuerdo, foto o anécdota del Corpus Christi. Se guarda en tu navegador (local). Para publicar en línea, exporta el archivo .json y envíalo al docente.</p>
+      <form id="relatoForm" class="card" style="display:grid;gap:.6rem">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.6rem">
+          <input required name="nombre" placeholder="Tu nombre">
+          <input name="edad" placeholder="Edad (opcional)">
+          <input name="comunidad" placeholder="Comunidad / barrio">
+          <input name="titulo" placeholder="Título del relato">
+        </div>
+        <textarea required name="texto" rows="4" placeholder="Escribe tu relato o comentario"></textarea>
+        <div>
+          <label class="tab-button" style="display:inline-block">Subir imagen (vista local) <input type="file" id="relatoImg" accept="image/*" style="display:none"></label>
+          <button class="tab-button" type="submit">Publicar aquí</button>
+          <button class="tab-button" type="button" id="exportRelatos">Exportar .json</button>
+          <label class="tab-button" style="display:inline-block">Importar .json <input type="file" id="importRelatos" accept="application/json" style="display:none"></label>
+        </div>
+      </form>
+      <div id="relatosLista" class="grid"></div>
+      <details class="note" style="margin-top:1rem">
+        <summary>¿Cómo volver público este espacio?</summary>
+        <p>Si alojas la web en GitHub Pages o Netlify, puedes conectar el formulario a <b>Netlify Forms</b> o a <b>Google Forms/Firebase</b> para guardar los relatos en línea con moderación.</p>
+      </details>
+    </section>
+  </main>
+
+  <footer>
+    <p>© Aula Corpus Christi – Uso educativo. Hecho con metodologías freireanas.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
