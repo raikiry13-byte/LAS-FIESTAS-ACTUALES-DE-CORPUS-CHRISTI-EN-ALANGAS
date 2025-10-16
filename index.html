@@ -63,7 +63,21 @@
     <label><input type="checkbox" id="editToggle"> Modo edición</label>
   </details>
   <div id="filterBar" class="filters"></div>
-  <div class="grid" id="gallery"></div>
+
+<div class="slider" id="slider">
+  <button class="s-nav" id="sPrev" aria-label="Anterior">‹</button>
+  <div class="s-stage" id="sStage">
+    <img id="sImg" alt="">
+    <video id="sVid" controls playsinline style="display:none"></video>
+  </div>
+  <button class="s-nav" id="sNext" aria-label="Siguiente">›</button>
+</div>
+
+<div class="s-caption">
+  <p id="sCap"></p>
+  <small id="sMeta"></small>
+  <div class="s-count" id="sCount"></div>
+</div>
 </section>
 
 <section id="juegos" class="card">
