@@ -153,6 +153,7 @@ const triviaQs = [
   {q:'¿Qué palabra describe la mezcla de tradiciones andinas y católicas?', a:['Sincretismo','Modernización','Secularización'], ok:0},
   {q:'¿Qué celebra el Corpus Christi dentro del catolicismo?', a:['La Eucaristía','El Año Nuevo','El Carnaval'], ok:0},
   {q:'¿Qué símbolo andino aparece en los trajes de danzantes?', a:['Cóndor','Delfín','Ballena'], ok:0},
+  {q:'¿Qué elementos del Corpus Christi provienen de prácticas prehispánicas?', a:['Figurina','Trompeta','Sombreros'], ok:0 },
 ];
 function renderTrivia(){
   if(!triviaHost) return;
