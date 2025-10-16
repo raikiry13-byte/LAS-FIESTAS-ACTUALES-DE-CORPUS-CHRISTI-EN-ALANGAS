@@ -9,7 +9,8 @@ document.querySelectorAll('.tab-button').forEach(btn=>{
   });
 });
 
-// Galería (slider con filtros)
+// ========================== GALERÍA (SLIDER CON FILTROS) ==========================
+
 const filterBar = document.getElementById('filterBar');
 const editToggle = document.getElementById('editToggle');
 const OV_KEY='media_overrides_v1';
@@ -28,14 +29,32 @@ let ALL_ITEMS = [];
 let SHOWN = [];
 let IDX = 0;
 
-const embeddedMedia = (()=>{
-  const list = [];
-  for(let i=1;i<=60;i++){ list.push({src:`assets/img/alangasi-${i}.jpg`, type:'image', category:'Procesión', caption:'Corpus Christi en Alangasí'}); }
-  for(let i=1;i<=10;i++){ list.push({src:`assets/video/video-${i}.mp4`, type:'video', category:'Procesión', caption:'Comparsas y música'}); }
-  list.push({src:'assets/img/danzante-silueta.svg', type:'image', category:'Danzas', caption:'Silueta CC0 del danzante'});
-  return list;
-})();
+// Detecta automáticamente qué fotos existen en assets/img/alangasi-#.jpg
+async function detectImages(min=1, max=28) {
+  const promises = [];
+  const found = [];
+  for (let i=min; i<=max; i++){
+    const src = `assets/img/alangasi-${i}.jpg`;
+    promises.push(new Promise(resolve=>{
+      const im = new Image();
+      im.onload = ()=>{ 
+        found.push({ src, type:'image', category:'Procesión', caption:'Corpus Christi en Alangasí' });
+        resolve();
+      };
+      im.onerror = ()=> resolve();
+      im.src = src + `?v=${Date.now()}`; // evitar caché
+    }));
+  }
+  await Promise.all(promises);
+  found.sort((a,b)=>{
+    const na = parseInt(a.src.match(/alangasi-(\d+)\.jpg/)[1],10);
+    const nb = parseInt(b.src.match(/alangasi-(\d+)\.jpg/)[1],10);
+    return na - nb;
+  });
+  return found;
+}
 
+// Carga manifest si existe; si no, usa autodetección + overrides locales
 async function loadManifest(){
   try{
     const resp = await fetch('assets/media.json', {cache:'no-cache'});
@@ -44,10 +63,12 @@ async function loadManifest(){
     const overrides = JSON.parse(localStorage.getItem(OV_KEY)||'{}');
     return data.media.map(m=> ({...m, ...(overrides[m.src]||{})}));
   }catch(e){
+    const base = await detectImages(1,28); // ← si subes más, cambia 28 por el último número
     const overrides = JSON.parse(localStorage.getItem(OV_KEY)||'{}');
-    return embeddedMedia.map(m=> ({...m, ...(overrides[m.src]||{})}));
+    return base.map(m=> ({...m, ...(overrides[m.src]||{})}));
   }
 }
+
 function saveOverride(src, patch){
   const ov = JSON.parse(localStorage.getItem(OV_KEY)||'{}');
   ov[src] = {...(ov[src]||{}), ...patch};
@@ -73,7 +94,6 @@ function show(i){
   IDX = (i + SHOWN.length) % SHOWN.length;
   const item = SHOWN[IDX];
 
-  // Cambiar medio
   if(item.type==='image'){
     sVid.pause(); sVid.style.display='none';
     sImg.style.display='block'; sImg.src=item.src; sImg.alt=item.caption||'';
@@ -82,7 +102,6 @@ function show(i){
     sVid.style.display='block'; sVid.src=item.src;
   }
 
-  // Pie y meta
   if(editToggle){
     sCap.contentEditable = editToggle.checked;
     sCap.className = editToggle.checked ? 'editable' : '';
@@ -106,7 +125,6 @@ document.addEventListener('keydown', (e)=>{
   if(e.key==='ArrowLeft') show(IDX-1);
   if(e.key==='ArrowRight') show(IDX+1);
 });
-// Swipe básico
 let tx=0;
 sStage?.addEventListener('touchstart', e=> tx = e.changedTouches[0].clientX);
 sStage?.addEventListener('touchend', e=>{
@@ -120,13 +138,16 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   applyFilter('Todos');
   if(editToggle){
     editToggle.addEventListener('change', async ()=>{
-      ALL_ITEMS = await loadManifest(); // recarga con overrides
+      ALL_ITEMS = await loadManifest();
       applyFilter('Todos');
     });
   }
 });
 
-// Trivia
+// ========================== FIN GALERÍA ==========================
+
+
+// ========================== TRIVIA ==========================
 const triviaHost = document.getElementById('trivia');
 const triviaQs = [
   {q:'¿Qué palabra describe la mezcla de tradiciones andinas y católicas?', a:['Sincretismo','Modernización','Secularización'], ok:0},
@@ -142,7 +163,10 @@ function renderTrivia(){
     box.appendChild(p);
     t.a.forEach((opt,idx)=>{
       const btn = document.createElement('button'); btn.textContent = opt; btn.style.marginRight='6px'; btn.className='tab-button';
-      btn.addEventListener('click', ()=>{ if(idx===t.ok){ btn.style.background='#000'; btn.style.color='#fff'; } else { btn.style.background='#fff'; btn.style.color='#000'; btn.style.borderColor='#000'; }});
+      btn.addEventListener('click', ()=>{ 
+        if(idx===t.ok){ btn.style.background='#000'; btn.style.color='#fff'; } 
+        else { btn.style.background='#fff'; btn.style.color='#000'; btn.style.borderColor='#000'; }
+      });
       box.appendChild(btn);
     });
     triviaHost.appendChild(box);
@@ -150,7 +174,8 @@ function renderTrivia(){
 }
 renderTrivia();
 
-// Línea del tiempo (scrollable, por años)
+
+// ========================== LÍNEA DEL TIEMPO ==========================
 const tlRail = document.getElementById('timeline');
 const tlInner = document.getElementById('timelineInner');
 const tlRange = document.getElementById('tlRange');
@@ -167,7 +192,7 @@ function renderTimeline(){
   if(!tlInner) return;
   tlInner.innerHTML='';
   const min=1200, max=2025;
-  const width = 2000; // px
+  const width = 2000; 
   tlInner.style.minWidth = width+'px';
   tlEvents.forEach(e=>{
     const x = (e.year-min)/(max-min) * width;
@@ -187,7 +212,8 @@ if(tlRange && tlRail){
   });
 }
 
-// Memorama con explicaciones
+
+// ========================== MEMORAMA ==========================
 const mem = document.getElementById('memory');
 const memExplain = document.getElementById('memExplain');
 if(mem){
@@ -229,7 +255,8 @@ if(mem){
   });
 }
 
-// Viste al danzante (drag & drop sobre silueta CC0)
+
+// ========================== VISTE AL DANZANTE ==========================
 const avatar = document.querySelector('.avatar');
 if(avatar){
   document.querySelectorAll('.item').forEach(it=> it.addEventListener('dragstart', e=> e.dataTransfer.setData('text/plain', it.dataset.slot)));
@@ -242,10 +269,14 @@ if(avatar){
   });
 }
 
-// Plantillas (SVG imprimible)
-document.getElementById('printTemplates')?.addEventListener('click', ()=>{ window.open('assets/templates/plantillas-mascaras-CC0.svg','_blank'); });
 
-// Relatos (igual que antes)
+// ========================== PLANTILLAS (PDF) ==========================
+document.getElementById('printTemplates')?.addEventListener('click', ()=>{ 
+  window.open('assets/templates/plantillas-mascaras.pdf','_blank'); 
+});
+
+
+// ========================== RELATOS ==========================
 const RKEY='relatos_cc_alangasi';
 const relForm = document.getElementById('relatoForm');
 const relList = document.getElementById('relatosList');
