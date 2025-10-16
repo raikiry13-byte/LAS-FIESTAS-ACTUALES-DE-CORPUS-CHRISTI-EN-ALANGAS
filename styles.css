@@ -16,11 +16,15 @@
 
 html, body{
   margin:0;
-  background:var(--c-bg);
   color:var(--c-ink);
   font-family:"Merriweather", serif;  /* cuerpo */
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
+
+  /* Fondo con textura */
+  background:
+    linear-gradient(rgba(255,255,255,.88), rgba(255,255,255,.9)),
+    url("assets/img/fondo.jpg") center/cover no-repeat fixed;
 }
 
 h1,h2,h3,h4,
@@ -38,7 +42,9 @@ a:hover{ text-decoration:underline }
    ========================= */
 .hero{
   padding:2rem 1rem;
-  background: linear-gradient(180deg, #EFE9FF 0%, rgba(239,233,255,0) 70%);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.75)),
+    url("assets/img/fondo.jpg") center/cover no-repeat;
   text-align:center;
 }
 
@@ -51,6 +57,12 @@ a:hover{ text-decoration:underline }
   color:var(--c-ink);
   border-radius:999px;
   border:2px solid var(--c-ring);
+  transition:.2s;
+}
+.menu a:hover{
+  background:var(--c-primary);
+  color:#fff;
+  border-color:var(--c-primary);
 }
 .menu .btn, .menu .btn-like{
   background:var(--c-primary);
@@ -243,21 +255,3 @@ input,textarea{
   .s-nav{ opacity:.85; transition:opacity .15s ease }
   .s-nav:hover{ opacity:1 }
 }
-
-/* =========================
-   OPCIONAL: FONDO CON IMAGEN
-   - Sube un archivo a assets/img/bg-textil.jpg
-   - Descomenta el bloque siguiente
-   ========================= */
-/*
-body{
-  background:
-    linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.9)),
-    url("assets/img/bg-textil.jpg") center/cover no-repeat fixed;
-}
-.hero{
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.75)),
-    url("assets/img/bg-textil.jpg") center/cover no-repeat;
-}
-*/
