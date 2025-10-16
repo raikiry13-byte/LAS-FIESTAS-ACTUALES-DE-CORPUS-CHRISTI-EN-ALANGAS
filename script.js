@@ -9,11 +9,24 @@ document.querySelectorAll('.tab-button').forEach(btn=>{
   });
 });
 
-// Galería (carga con manifest o fallback)
-const gallery = document.getElementById('gallery');
+// Galería (slider con filtros)
 const filterBar = document.getElementById('filterBar');
 const editToggle = document.getElementById('editToggle');
 const OV_KEY='media_overrides_v1';
+
+// Elementos del slider
+const sPrev = document.getElementById('sPrev');
+const sNext = document.getElementById('sNext');
+const sImg  = document.getElementById('sImg');
+const sVid  = document.getElementById('sVid');
+const sCap  = document.getElementById('sCap');
+const sMeta = document.getElementById('sMeta');
+const sCount= document.getElementById('sCount');
+const sStage= document.getElementById('sStage');
+
+let ALL_ITEMS = [];
+let SHOWN = [];
+let IDX = 0;
 
 const embeddedMedia = (()=>{
   const list = [];
@@ -41,6 +54,7 @@ function saveOverride(src, patch){
   localStorage.setItem(OV_KEY, JSON.stringify(ov));
 }
 function unique(a){ return [...new Set(a)]; }
+
 function renderFilters(items, current='Todos'){
   if(!filterBar) return;
   filterBar.innerHTML='';
@@ -49,55 +63,65 @@ function renderFilters(items, current='Todos'){
     const b=document.createElement('button');
     b.className='filter-btn' + (c===current?' active':'');
     b.textContent=c;
-    b.addEventListener('click',()=>renderGallery(items,c));
+    b.addEventListener('click',()=>applyFilter(c));
     filterBar.appendChild(b);
   });
 }
-function renderGallery(items, category='Todos'){
-  if(!gallery) return;
-  gallery.innerHTML='';
-  renderFilters(items, category);
-  const shown = items.filter(i=> category==='Todos' || i.category===category);
-  shown.forEach(item=>{
-    const tile = document.createElement('div'); tile.className='tile';
-    const fig = document.createElement('figure');
-    if(item.type==='image'){
-      const img = new Image(); img.src=item.src; img.alt=item.caption||'Imagen'; img.loading='lazy';
-      img.onerror = ()=>{ fig.innerHTML='<div style="padding:1rem">Archivo no encontrado</div>'; };
-      fig.appendChild(img);
-    } else {
-      const v = document.createElement('video'); v.src=item.src; v.controls=true; v.playsInline=true; v.preload='metadata';
-      v.onerror = ()=>{ fig.innerHTML='<div style="padding:1rem">Video no disponible</div>'; };
-      fig.appendChild(v);
-    }
-    const cap = document.createElement('figcaption'); cap.textContent=item.caption||'';
-    if(editToggle){ cap.contentEditable = editToggle.checked; cap.className = editToggle.checked ? 'editable' : ''; }
-    cap.addEventListener('input',()=>saveOverride(item.src,{caption:cap.textContent}));
-    fig.appendChild(cap); tile.appendChild(fig);
 
-    const meta = document.createElement('div'); meta.className='cap';
-    if(editToggle){
-      const sel = document.createElement('select');
-      ['Procesión','Danzas','Gigantones','Altares','Músicos','Infancia','Otros'].forEach(opt=>{
-        const o = document.createElement('option'); o.value=opt; o.textContent=opt; if((item.category||'Procesión')===opt) o.selected=true; sel.appendChild(o);
-      });
-      sel.disabled = !editToggle.checked; if(editToggle.checked) sel.className='editable';
-      sel.addEventListener('change',()=>{ saveOverride(item.src,{category:sel.value}); renderGallery(items, sel.value); });
-      meta.appendChild(sel);
-    } else {
-      meta.innerHTML = `<small>Categoría: <b>${item.category||'Procesión'}</b></small>`;
-    }
-    tile.appendChild(meta);
-    gallery.appendChild(tile);
-  });
+function show(i){
+  if(!SHOWN.length) return;
+  IDX = (i + SHOWN.length) % SHOWN.length;
+  const item = SHOWN[IDX];
+
+  // Cambiar medio
+  if(item.type==='image'){
+    sVid.pause(); sVid.style.display='none';
+    sImg.style.display='block'; sImg.src=item.src; sImg.alt=item.caption||'';
+  } else {
+    sImg.style.display='none';
+    sVid.style.display='block'; sVid.src=item.src;
+  }
+
+  // Pie y meta
+  if(editToggle){
+    sCap.contentEditable = editToggle.checked;
+    sCap.className = editToggle.checked ? 'editable' : '';
+    sCap.oninput = ()=> saveOverride(item.src,{caption:sCap.textContent});
+  }
+  sCap.textContent = item.caption || '';
+  sMeta.textContent = item.category ? `Categoría: ${item.category}` : '';
+  sCount.textContent = `${IDX+1} / ${SHOWN.length}`;
 }
+
+function applyFilter(cat='Todos'){
+  SHOWN = (cat==='Todos') ? ALL_ITEMS : ALL_ITEMS.filter(i=> i.category===cat);
+  renderFilters(ALL_ITEMS, cat);
+  show(0);
+}
+
+// Controles
+sPrev?.addEventListener('click', ()=> show(IDX-1));
+sNext?.addEventListener('click', ()=> show(IDX+1));
+document.addEventListener('keydown', (e)=>{
+  if(e.key==='ArrowLeft') show(IDX-1);
+  if(e.key==='ArrowRight') show(IDX+1);
+});
+// Swipe básico
+let tx=0;
+sStage?.addEventListener('touchstart', e=> tx = e.changedTouches[0].clientX);
+sStage?.addEventListener('touchend', e=>{
+  const dx = e.changedTouches[0].clientX - tx;
+  if(Math.abs(dx)>40) (dx<0 ? show(IDX+1) : show(IDX-1));
+});
+
+// Inicializar
 document.addEventListener('DOMContentLoaded', async ()=>{
-  const items = await loadManifest();
-  renderGallery(items, 'Todos');
+  ALL_ITEMS = await loadManifest();
+  applyFilter('Todos');
   if(editToggle){
     editToggle.addEventListener('change', async ()=>{
-      const items2 = await loadManifest();
-      renderGallery(items2, 'Todos');
+      ALL_ITEMS = await loadManifest(); // recarga con overrides
+      applyFilter('Todos');
     });
   }
 });
