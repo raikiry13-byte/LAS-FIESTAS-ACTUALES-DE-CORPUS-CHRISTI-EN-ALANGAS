@@ -23,7 +23,7 @@ html, body{
 
   /* Fondo con textura */
   background:
-    linear-gradient(rgba(255,255,255,.88), rgba(255,255,255,.9)),
+    linear-gradient(rgba(255,255,255,.2), rgba(255,255,255,.2)),
     url("assets/img/fondo.jpg") center/cover no-repeat fixed;
 }
 
