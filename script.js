@@ -1,4 +1,6 @@
-// ========================== TABS ==========================
+'use strict';
+
+/* ========================== TABS ========================== */
 document.querySelectorAll('.tab-button').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     document.querySelectorAll('.tab-button').forEach(b=>b.classList.remove('active'));
@@ -9,7 +11,7 @@ document.querySelectorAll('.tab-button').forEach(btn=>{
   });
 });
 
-// ========================== GALERÍA (SLIDER CON FILTROS) ==========================
+/* ========================== GALERÍA (SLIDER CON FILTROS) ========================== */
 const filterBar = document.getElementById('filterBar');
 const editToggle = document.getElementById('editToggle');
 const OV_KEY='media_overrides_v1';
@@ -94,11 +96,15 @@ function show(i){
   const item = SHOWN[IDX];
 
   if(item.type==='image'){
-    sVid.pause(); sVid.style.display='none';
-    sImg.style.display='block'; sImg.src=item.src; sImg.alt=item.caption||'';
+    sVid.pause();
+    sVid.style.display='none';
+    sImg.style.display='block';
+    sImg.src=item.src;
+    sImg.alt=item.caption||'';
   } else {
     sImg.style.display='none';
-    sVid.style.display='block'; sVid.src=item.src;
+    sVid.style.display='block';
+    sVid.src=item.src;
   }
 
   sCap.textContent = item.caption || '';
@@ -143,7 +149,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   }
 });
 
-// ========================== TRIVIA ==========================
+/* ========================== TRIVIA ========================== */
 const triviaHost = document.getElementById('trivia');
 const triviaQs = [
   {q:'¿Qué palabra describe la mezcla de tradiciones andinas y católicas?', a:['Sincretismo','Modernización','Secularización'], ok:0},
@@ -156,13 +162,20 @@ function renderTrivia(){
   triviaHost.innerHTML = '';
   triviaQs.forEach((t,i)=>{
     const box = document.createElement('div'); box.style.marginBottom='8px';
-    const p = document.createElement('p'); p.innerHTML = `<b>${i+1}.</b> ${t.q}`;
+    const p = document.createElement('p');
+    p.innerHTML = `<b>${i+1}.</b> ${t.q}`;
     box.appendChild(p);
     t.a.forEach((opt,idx)=>{
-      const btn = document.createElement('button'); btn.textContent = opt; btn.style.marginRight='6px'; btn.className='tab-button';
+      const btn = document.createElement('button');
+      btn.textContent = opt;
+      btn.style.marginRight='6px';
+      btn.className='tab-button';
       btn.addEventListener('click', ()=>{ 
-        if(idx===t.ok){ btn.style.background='#000'; btn.style.color='#fff'; } 
-        else { btn.style.background='#fff'; btn.style.color='#000'; btn.style.borderColor='#000'; }
+        if(idx===t.ok){
+          btn.style.background='#000'; btn.style.color='#fff';
+        } else {
+          btn.style.background='#fff'; btn.style.color='#000'; btn.style.borderColor='#000';
+        }
       });
       box.appendChild(btn);
     });
@@ -171,7 +184,7 @@ function renderTrivia(){
 }
 renderTrivia();
 
-// ========================== LÍNEA DEL TIEMPO ==========================
+/* ========================== LÍNEA DEL TIEMPO ========================== */
 const tlRail = document.getElementById('timeline');
 const tlInner = document.getElementById('timelineInner');
 const tlRange = document.getElementById('tlRange');
@@ -192,8 +205,10 @@ function renderTimeline(){
   tlInner.style.minWidth = width+'px';
   tlEvents.forEach(e=>{
     const x = (e.year-min)/(max-min) * width;
-    const dot = document.createElement('div'); dot.className='tl-dot'; dot.style.left = x+'px'; dot.title=e.note;
-    const lab = document.createElement('div'); lab.className='tl-label'; lab.style.left = x+'px'; lab.textContent = e.year;
+    const dot = document.createElement('div');
+    dot.className='tl-dot'; dot.style.left = x+'px'; dot.title=e.note;
+    const lab = document.createElement('div');
+    lab.className='tl-label'; lab.style.left = x+'px'; lab.textContent = e.year;
     dot.addEventListener('click', ()=> tlNote.textContent = e.year+': '+e.note);
     lab.addEventListener('click', ()=> tlNote.textContent = e.year+': '+e.note);
     tlInner.appendChild(dot); tlInner.appendChild(lab);
@@ -208,7 +223,7 @@ if(tlRange && tlRail){
   });
 }
 
-// ========================== MEMORAMA ==========================
+/* ========================== MEMORAMA ========================== */
 const mem = document.getElementById('memory');
 const memExplain = document.getElementById('memExplain');
 if(mem){
@@ -232,7 +247,10 @@ if(mem){
     memExplain.appendChild(li); added.add(sym);
   }
   deck.forEach((s)=>{
-    const card = document.createElement('div'); card.className='mem-card'; card.dataset.symbol=s; card.textContent='?';
+    const card = document.createElement('div');
+    card.className='mem-card';
+    card.dataset.symbol=s;
+    card.textContent='?';
     card.addEventListener('click', ()=>{
       if(lock || card.classList.contains('matched') || card===first) return;
       card.textContent = s;
@@ -241,8 +259,8 @@ if(mem){
         if(first.dataset.symbol===s){
           first.classList.add('matched'); card.classList.add('matched'); matched+=2; addExplain(s); first=null;
           if(matched===deck.length){
-  setTimeout(()=>alert('¡Memorama completo!\n\n¿Qué símbolos relacionados al Corpus Christi o a la ritualidad andina reconoces en tu entorno cotidiano?'), 200);
-}
+            setTimeout(()=>alert('¡Memorama completo!\n\n¿Qué símbolos relacionados al Corpus Christi o a la ritualidad andina reconoces en tu entorno cotidiano?'), 200);
+          }
         } else {
           lock=true; setTimeout(()=>{ first.textContent='?'; card.textContent='?'; first=null; lock=false; }, 600);
         }
@@ -252,7 +270,7 @@ if(mem){
   });
 }
 
-// ========================== VISTE AL DANZANTE (CAPAS + MENSAJE FINAL) ==========================
+/* ========================== VISTE AL DANZANTE (CAPAS + MENSAJE FINAL) ========================== */
 (function setupDressUp(){
   const avatar = document.querySelector('.avatar');
   if(!avatar) return;
@@ -317,12 +335,12 @@ if(mem){
   }
 })();
 
-// ========================== PLANTILLAS (PDF) ==========================
+/* ========================== PLANTILLAS (PDF) ========================== */
 document.getElementById('printTemplates')?.addEventListener('click', ()=>{ 
   window.open('assets/templates/plantillas-mascaras.pdf','_blank'); 
 });
 
-// ========================== RELATOS ==========================
+/* ========================== RELATOS ========================== */
 const RKEY='relatos_cc_alangasi';
 const relForm = document.getElementById('relatoForm');
 const relList = document.getElementById('relatosList');
