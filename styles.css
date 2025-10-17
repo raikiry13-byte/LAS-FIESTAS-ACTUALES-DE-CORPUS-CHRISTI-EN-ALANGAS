@@ -3,7 +3,7 @@
    ========================= */
 :root{
   /* Paleta (ajústala a tu gusto) */
-  --c-bg: #F7F4EE;        /* fondo general */
+  --c-bg: #F7F4EE;        /* fondo general de seguridad si no carga la imagen */
   --c-card:#FFFFFF;       /* tarjetas / controles */
   --c-ink:#1F2937;        /* texto principal */
   --c-primary:#D7263D;    /* rojo fiesta */
@@ -21,7 +21,7 @@ html, body{
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
 
-  /* Fondo con textura */
+  /* Fondo con textura + velo (ajusta opacidad cambiando .2) */
   background:
     linear-gradient(rgba(255,255,255,.2), rgba(255,255,255,.2)),
     url("assets/img/fondo.jpg") center/cover no-repeat fixed;
@@ -46,6 +46,7 @@ a:hover{ text-decoration:underline }
     linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.75)),
     url("assets/img/fondo.jpg") center/cover no-repeat;
   text-align:center;
+  backdrop-filter:saturate(110%);
 }
 
 .menu{
@@ -188,7 +189,7 @@ a:hover{ text-decoration:underline }
 .tl-note{ font-size:.95rem; margin-top:.5rem }
 
 /* =========================
-   JUEGOS
+   JUEGOS: MEMORAMA
    ========================= */
 .memory{ display:grid; grid-template-columns:repeat(4,60px); gap:8px }
 .mem-card{
@@ -198,25 +199,67 @@ a:hover{ text-decoration:underline }
 }
 .mem-card.matched{ background:#d1fae5; border-color:#10b981 }
 
-.dressup{ display:flex; gap:1rem; align-items:flex-start }
+/* =========================
+   JUEGOS: VISTE AL DANZANTE (capas)
+   ========================= */
+.dressup{
+  display:grid;
+  grid-template-columns: minmax(240px,380px) 1fr;
+  gap:1rem;
+  align-items:start;
+}
 .avatar{
-  flex:1; min-height:240px; border:2px dashed var(--c-ink);
-  border-radius:12px; padding:1rem; text-align:center; position:relative
-}
-.avatar-img{ max-width:100%; height:auto; display:block; margin:0 auto 6px }
-.items{ display:grid; gap:.5rem }
-.item{
+  position:relative;
   background:var(--c-card);
-  border:2px solid var(--c-ink);
-  border-radius:999px;
-  padding:.4rem .8rem;
-  cursor:grab; color:var(--c-ink);
+  border-radius:12px;
+  padding:.5rem;
+  box-shadow:0 8px 22px var(--c-ring);
 }
-.drop-slot{
-  display:block; margin:.25rem auto; padding:.25rem .5rem;
-  border:2px dashed var(--c-ink); border-radius:8px; max-width:220px
+.avatar-img{
+  width:100%;
+  height:auto;
+  display:block;
+  border-radius:10px;
+}
+.dress-layer{
+  position:absolute;
+  inset:.5rem;              /* alinea con padding del avatar */
+  width:calc(100% - 1rem);
+  height:auto;
+  object-fit:contain;
+  pointer-events:none;
+  display:none;             /* visible sólo cuando la “equipes” con JS */
 }
 
+/* Piezas arrastrables como miniaturas */
+.items{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap:10px;
+  align-content:start;
+}
+.item{
+  display:block;
+  width:100%;
+  background:var(--c-card);
+  border:2px solid var(--c-ink);
+  border-radius:12px;
+  padding:6px;
+  cursor:grab;
+  transition:.15s ease;
+}
+.item:active{ cursor:grabbing }
+.item:hover{ transform:translateY(-1px) }
+.item{ /* las piezas son <img class="item"> */
+  height:auto;
+}
+
+/* (El viejo drop-slot ya no se usa, pero por si quedó en el HTML) */
+.drop-slot{ display:none }
+
+/* =========================
+   FORMULARIOS / BOTONES
+   ========================= */
 .row{ display:flex; gap:.5rem; flex-wrap:wrap }
 input,textarea,button{ font:inherit; color:var(--c-ink) }
 input,textarea{
