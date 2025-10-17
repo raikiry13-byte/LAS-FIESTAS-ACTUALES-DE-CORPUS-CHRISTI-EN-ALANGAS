@@ -121,24 +121,26 @@
       <div>
         <h3>Viste al danzante</h3>
         <div class="dressup">
-          <!-- 🧍‍♂️ Avatar base + capas -->
+          <!-- 🧍‍♂️ Avatar base + CAPAS VACÍAS (el JS les pone la prenda) -->
           <div class="avatar" id="avatarZone">
             <img src="assets/dressup/base-nude.png" alt="Avatar base" class="avatar-img" id="avatarBase">
-            <img src="assets/dressup/pechera.png" class="dress-layer" id="layerPechera" alt="Pechera">
-            <img src="assets/dressup/pantalon.png" class="dress-layer" id="layerPantalon" alt="Pantalón">
-            <img src="assets/dressup/brazaletes.png" class="dress-layer" id="layerBrazaletes" alt="Brazaletes">
-            <img src="assets/dressup/mascara.png" class="dress-layer" id="layerMascara" alt="Máscara">
+
+            <!-- Capas superpuestas (inician vacías) -->
+            <img class="dress-layer" id="layer-cabeza" alt="">
+            <img class="dress-layer" id="layer-pechera" alt="">
+            <img class="dress-layer" id="layer-faldon" alt="">
+            <img class="dress-layer" id="layer-brazaletes" alt="">
           </div>
 
-          <!-- 🎨 Piezas arrastrables -->
+          <!-- 🎨 Piezas arrastrables (coinciden con data-part) -->
           <div class="items">
-            <img src="assets/dressup/pechera.png" class="item" draggable="true" data-layer="Pechera" alt="Pechera">
-            <img src="assets/dressup/pantalon.png" class="item" draggable="true" data-layer="Pantalon" alt="Pantalón">
-            <img src="assets/dressup/brazaletes.png" class="item" draggable="true" data-layer="Brazaletes" alt="Brazaletes">
-            <img src="assets/dressup/mascara.png" class="item" draggable="true" data-layer="Mascara" alt="Máscara">
+            <img src="assets/dressup/mascara.png"     class="item" draggable="true" data-part="cabeza"     alt="Cabeza">
+            <img src="assets/dressup/pechera.png"     class="item" draggable="true" data-part="pechera"    alt="Pechera">
+            <img src="assets/dressup/pantalon.png"    class="item" draggable="true" data-part="faldon"     alt="Faldón">
+            <img src="assets/dressup/brazaletes.png"  class="item" draggable="true" data-part="brazaletes" alt="Brazaletes">
           </div>
         </div>
-        <p class="hint">Arrastra cada prenda hacia el danzante para vestirlo.</p>
+        <p class="hint">Arrastra cada prenda hacia el danzante para vestirlo. Doble clic en una capa para quitarla.</p>
       </div>
     </div>
   </section>
