@@ -157,28 +157,56 @@ const triviaQs = [
   {q:'¿Qué símbolo andino aparece en los trajes de danzantes?', a:['Cóndor','Delfín','Ballena'], ok:0},
   {q:'¿Qué elementos del Corpus Christi provienen de prácticas prehispánicas?', a:['Figurina','Trompeta','Sombreros'], ok:0 },
 ];
+
 function renderTrivia(){
   if(!triviaHost) return;
   triviaHost.innerHTML = '';
+
+  // Para saber cuándo se respondió cada pregunta
+  let answered = 0;
+
   triviaQs.forEach((t,i)=>{
-    const box = document.createElement('div'); box.style.marginBottom='8px';
+    const box = document.createElement('div');
+    box.style.marginBottom='8px';
+
     const p = document.createElement('p');
     p.innerHTML = `<b>${i+1}.</b> ${t.q}`;
     box.appendChild(p);
+
     t.a.forEach((opt,idx)=>{
       const btn = document.createElement('button');
       btn.textContent = opt;
       btn.style.marginRight='6px';
       btn.className='tab-button';
-      btn.addEventListener('click', ()=>{ 
+
+      btn.addEventListener('click', ()=>{
+        // Marca que esta pregunta ya fue respondida (solo una vez)
+        if(!box.classList.contains('answered')){
+          box.classList.add('answered');
+          answered++;
+        }
+
+        // Feedback visual
         if(idx===t.ok){
-          btn.style.background='#000'; btn.style.color='#fff';
+          btn.style.background='#000';
+          btn.style.color='#fff';
         } else {
-          btn.style.background='#fff'; btn.style.color='#000'; btn.style.borderColor='#000';
+          btn.style.background='#fff';
+          btn.style.color='#000';
+          btn.style.borderColor='#000';
+        }
+
+        // Mensaje de reflexión al completar todas
+        if(answered === triviaQs.length){
+          setTimeout(()=>{
+            alert('🎉 ¡Has completado la trivia!\n\nReflexiona desde tu experiencia: ¿Qué tipo de tradiciones reconoces presentes en tu vida cotidiana?');
+          }, 400);
         }
       });
+
       box.appendChild(btn);
     });
+
     triviaHost.appendChild(box);
   });
 }
@@ -197,24 +225,24 @@ const tlEvents = [
   {year:2000, note:'S. XXI: Patrimonio vivo, participación juvenil y escuelas.'},
   {year:2024, note:'Actualidad: celebración comunitaria con identidad andina.'}
 ];
+
 function renderTimeline(){
   if(!tlInner) return;
   tlInner.innerHTML='';
   const min=1200, max=2025;
-  const width = 2000; 
+  const width = 2000;
   tlInner.style.minWidth = width+'px';
   tlEvents.forEach(e=>{
     const x = (e.year-min)/(max-min) * width;
-    const dot = document.createElement('div');
-    dot.className='tl-dot'; dot.style.left = x+'px'; dot.title=e.note;
-    const lab = document.createElement('div');
-    lab.className='tl-label'; lab.style.left = x+'px'; lab.textContent = e.year;
+    const dot = document.createElement('div'); dot.className='tl-dot'; dot.style.left = x+'px'; dot.title=e.note;
+    const lab = document.createElement('div'); lab.className='tl-label'; lab.style.left = x+'px'; lab.textContent = e.year;
     dot.addEventListener('click', ()=> tlNote.textContent = e.year+': '+e.note);
     lab.addEventListener('click', ()=> tlNote.textContent = e.year+': '+e.note);
     tlInner.appendChild(dot); tlInner.appendChild(lab);
   });
 }
 renderTimeline();
+
 if(tlRange && tlRail){
   tlRange.addEventListener('input', ()=>{
     const min=1200, max=2025, width = tlInner.getBoundingClientRect().width;
