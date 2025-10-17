@@ -1,4 +1,4 @@
-// Tabs
+// ========================== TABS ==========================
 document.querySelectorAll('.tab-button').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     document.querySelectorAll('.tab-button').forEach(b=>b.classList.remove('active'));
@@ -10,7 +10,6 @@ document.querySelectorAll('.tab-button').forEach(btn=>{
 });
 
 // ========================== GALERÍA (SLIDER CON FILTROS) ==========================
-
 const filterBar = document.getElementById('filterBar');
 const editToggle = document.getElementById('editToggle');
 const OV_KEY='media_overrides_v1';
@@ -102,12 +101,12 @@ function show(i){
     sVid.style.display='block'; sVid.src=item.src;
   }
 
+  sCap.textContent = item.caption || '';
   if(editToggle){
     sCap.contentEditable = editToggle.checked;
     sCap.className = editToggle.checked ? 'editable' : '';
     sCap.oninput = ()=> saveOverride(item.src,{caption:sCap.textContent});
   }
-  sCap.textContent = item.caption || '';
   sMeta.textContent = item.category ? `Categoría: ${item.category}` : '';
   sCount.textContent = `${IDX+1} / ${SHOWN.length}`;
 }
@@ -132,7 +131,7 @@ sStage?.addEventListener('touchend', e=>{
   if(Math.abs(dx)>40) (dx<0 ? show(IDX+1) : show(IDX-1));
 });
 
-// Inicializar
+// Inicializar galería
 document.addEventListener('DOMContentLoaded', async ()=>{
   ALL_ITEMS = await loadManifest();
   applyFilter('Todos');
@@ -143,9 +142,6 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     });
   }
 });
-
-// ========================== FIN GALERÍA ==========================
-
 
 // ========================== TRIVIA ==========================
 const triviaHost = document.getElementById('trivia');
@@ -174,7 +170,6 @@ function renderTrivia(){
   });
 }
 renderTrivia();
-
 
 // ========================== LÍNEA DEL TIEMPO ==========================
 const tlRail = document.getElementById('timeline');
@@ -212,7 +207,6 @@ if(tlRange && tlRail){
     tlRail.scrollTo({left: pos, behavior:'smooth'});
   });
 }
-
 
 // ========================== MEMORAMA ==========================
 const mem = document.getElementById('memory');
@@ -256,26 +250,51 @@ if(mem){
   });
 }
 
+// ========================== VISTE AL DANZANTE (CAPAS) ==========================
+(function setupDressUp(){
+  const avatar = document.querySelector('.avatar');
+  if(!avatar) return;
 
-// ========================== VISTE AL DANZANTE ==========================
-const avatar = document.querySelector('.avatar');
-if(avatar){
-  document.querySelectorAll('.item').forEach(it=> it.addEventListener('dragstart', e=> e.dataTransfer.setData('text/plain', it.dataset.slot)));
+  // Capas por parte (deben existir en el HTML con estos IDs)
+  const layers = {
+    cabeza:     document.getElementById('layer-cabeza'),
+    pechera:    document.getElementById('layer-pechera'),
+    faldon:     document.getElementById('layer-faldon'),
+    brazaletes: document.getElementById('layer-brazaletes'),
+  };
+
+  function equip(part, src){
+    const layer = layers[part];
+    if(!layer) return;
+    layer.src = src;
+    layer.style.display = 'block';
+  }
+
+  // Arrastrar piezas (imagenes con class="item" y data-part)
+  document.querySelectorAll('.item[data-part]').forEach(img=>{
+    img.addEventListener('dragstart', e=>{
+      e.dataTransfer.setData('part', img.dataset.part);
+      e.dataTransfer.setData('src', img.getAttribute('src'));
+    });
+    // Doble clic para equipar sin arrastrar
+    img.addEventListener('dblclick', ()=>{
+      equip(img.dataset.part, img.getAttribute('src'));
+    });
+  });
+
   avatar.addEventListener('dragover', e=> e.preventDefault());
   avatar.addEventListener('drop', e=>{
     e.preventDefault();
-    const slot = e.dataTransfer.getData('text/plain');
-    const target = avatar.querySelector(`.drop-slot[data-slot="${slot}"]`);
-    if(target){ target.textContent = `✓ ${slot} colocado`; target.style.borderColor='#10b981'; }
+    const part = e.dataTransfer.getData('part');
+    const src  = e.dataTransfer.getData('src');
+    if(part && src) equip(part, src);
   });
-}
-
+})();
 
 // ========================== PLANTILLAS (PDF) ==========================
 document.getElementById('printTemplates')?.addEventListener('click', ()=>{ 
   window.open('assets/templates/plantillas-mascaras.pdf','_blank'); 
 });
-
 
 // ========================== RELATOS ==========================
 const RKEY='relatos_cc_alangasi';
