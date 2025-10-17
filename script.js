@@ -250,7 +250,7 @@ if(mem){
   });
 }
 
-// ========================== VISTE AL DANZANTE (CAPAS) ==========================
+// ========================== VISTE AL DANZANTE (CAPAS + MENSAJE FINAL) ==========================
 (function setupDressUp(){
   const avatar = document.querySelector('.avatar');
   if(!avatar) return;
@@ -263,12 +263,26 @@ if(mem){
     brazaletes: document.getElementById('layer-brazaletes'),
   };
 
+  const requiredParts = Object.keys(layers);
+  const placed = new Set();
+
   function equip(part, src){
     const layer = layers[part];
     if(!layer) return;
     layer.src = src;
     layer.style.display = 'block';
+    placed.add(part);
+    checkCompletion();
   }
+
+  // Permite quitar una prenda con doble clic sobre la capa
+  Object.entries(layers).forEach(([part, layer])=>{
+    layer?.addEventListener('dblclick', ()=>{
+      layer.src = '';
+      layer.style.display = 'none';
+      placed.delete(part);
+    });
+  });
 
   // Arrastrar piezas (imagenes con class="item" y data-part)
   document.querySelectorAll('.item[data-part]').forEach(img=>{
@@ -289,6 +303,16 @@ if(mem){
     const src  = e.dataTransfer.getData('src');
     if(part && src) equip(part, src);
   });
+
+  function checkCompletion(){
+    if(placed.size === requiredParts.length){
+      setTimeout(()=>{
+        alert(
+          '🎭 A los participantes del juego:\n\nEn el área de comentarios, escribe cómo te identificas o cómo sientes que se refleja tu herencia cultural en este tipo de vestimenta.'
+        );
+      }, 300);
+    }
+  }
 })();
 
 // ========================== PLANTILLAS (PDF) ==========================
