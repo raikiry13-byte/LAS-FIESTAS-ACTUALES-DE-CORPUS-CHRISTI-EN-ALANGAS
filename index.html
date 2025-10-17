@@ -121,21 +121,24 @@
       <div>
         <h3>Viste al danzante</h3>
         <div class="dressup">
-          <div class="avatar">
-            <img src="assets/img/danzante-silueta.svg" alt="Danzante (CC0)" class="avatar-img">
-            <div class="drop-slot" data-slot="cabeza">Zona: cabeza</div>
-            <div class="drop-slot" data-slot="pechera">Zona: pechera</div>
-            <div class="drop-slot" data-slot="faldon">Zona: faldón</div>
-            <div class="drop-slot" data-slot="brazaletes">Zona: brazaletes</div>
+          <!-- 🧍‍♂️ Avatar base + capas -->
+          <div class="avatar" id="avatarZone">
+            <img src="assets/dressup/base-nude.png" alt="Avatar base" class="avatar-img" id="avatarBase">
+            <img src="assets/dressup/pechera.png" class="dress-layer" id="layerPechera" alt="Pechera">
+            <img src="assets/dressup/pantalon.png" class="dress-layer" id="layerPantalon" alt="Pantalón">
+            <img src="assets/dressup/brazaletes.png" class="dress-layer" id="layerBrazaletes" alt="Brazaletes">
+            <img src="assets/dressup/mascara.png" class="dress-layer" id="layerMascara" alt="Máscara">
           </div>
+
+          <!-- 🎨 Piezas arrastrables -->
           <div class="items">
-            <div class="item" draggable="true" data-slot="cabeza">Sombrero/Corona</div>
-            <div class="item" draggable="true" data-slot="pechera">Pechera bordada</div>
-            <div class="item" draggable="true" data-slot="faldon">Faldón</div>
-            <div class="item" draggable="true" data-slot="brazaletes">Brazaletes</div>
+            <img src="assets/dressup/pechera.png" class="item" draggable="true" data-layer="Pechera" alt="Pechera">
+            <img src="assets/dressup/pantalon.png" class="item" draggable="true" data-layer="Pantalon" alt="Pantalón">
+            <img src="assets/dressup/brazaletes.png" class="item" draggable="true" data-layer="Brazaletes" alt="Brazaletes">
+            <img src="assets/dressup/mascara.png" class="item" draggable="true" data-layer="Mascara" alt="Máscara">
           </div>
         </div>
-        <p class="hint">La silueta del danzante es de dominio público (CC0) creada para este sitio.</p>
+        <p class="hint">Arrastra cada prenda hacia el danzante para vestirlo.</p>
       </div>
     </div>
   </section>
