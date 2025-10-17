@@ -240,7 +240,9 @@ if(mem){
       else {
         if(first.dataset.symbol===s){
           first.classList.add('matched'); card.classList.add('matched'); matched+=2; addExplain(s); first=null;
-          if(matched===deck.length){ setTimeout(()=>alert('¡Memorama completo! ¿Qué símbolos relacionados al Corpus Christi o a la ritualidad andina reconoces en tu entorno cotidiano? Escribelo en los comentarios.'),200); }
+          if(matched===deck.length){
+  setTimeout(()=>alert('¡Memorama completo!\n\n¿Qué símbolos relacionados al Corpus Christi o a la ritualidad andina reconoces en tu entorno cotidiano?'), 200);
+}
         } else {
           lock=true; setTimeout(()=>{ first.textContent='?'; card.textContent='?'; first=null; lock=false; }, 600);
         }
